@@ -11,6 +11,8 @@ Two types of networks present: a network solely from LIF neurons and solely from
 
 The models are different, but the actor-critic algorithm to optimize the policy is the same for both of them.
 
+Code inspired by the supervised learning implementation of e-prop https://github.com/ChFrenkel/eprop-PyTorch
+
 
 
 
