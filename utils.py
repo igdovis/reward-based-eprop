@@ -64,8 +64,6 @@ def train_reward_AC(model, modelType):
                   break
           finish_episode_actor(policy, optimizer, gamma)
           optimizer.step()
-          #old = policy.get_rec_weights().clone().detach()
-          #print("DIFF", (old - policy.get_rec_weights()))
           running_reward = 0.05 * ep_reward + (1 - 0.05) * running_reward
           if e % 10 == 0:
               print(
@@ -106,22 +104,3 @@ def finish_episode_actor(policy, optimizer, gamma):
     del policy.saved_actions[:]
     del policy.state_values[:]
 
-def finish_episode_actor_td(policy, optimizer, gamma):
-    eps = np.finfo(np.float32).eps.item()
-    saved_actions = policy.saved_actions
-    state_values = policy.state_values
-    policy_loss = []
-    critic_loss = []
-    returns = []
-    i = 0
-    for r in policy.rewards:
-        R = r + gamma * state_values[i + 1] - state_values[i]
-        i = i + 1
-        returns.append(R)
-    returns = torch.as_tensor(returns).to(device)
-    returns = (returns - returns.mean()) / (returns.std() + eps)
-    policy.update_grad_td(returns)
-    # reset rewards and action buffer
-    del policy.rewards[:]
-    del policy.saved_actions[:]
-    del policy.state_values[:]

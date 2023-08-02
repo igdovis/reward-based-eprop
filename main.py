@@ -19,7 +19,7 @@ seq_len = 50
 rho = 0.985
 beta = 0.1
 
-alif = RSNN_ALIF(
+model = RSNN_ALIF(
            n_in,
            n_rec,
            n_out,
@@ -36,12 +36,9 @@ alif = RSNN_ALIF(
            lr_layer=lr_layer_norm,
            device="cuda"
 )
-device = torch.device("cuda")
-alif.to(device)
-train_reward_AC(alif, "ALIF")
 
 """
-lif = LIF(n_in,
+model = LIF(n_in,
                n_rec,
                n_out,
                seq_len,
@@ -51,15 +48,14 @@ lif = LIF(n_in,
                bias_out,
                gamma,
                dt=1e-3,
-               model='LIF',
                classif=True,
                w_init_gain=w_init_gain,
                lr_layer=lr_layer_norm,
-               t_crop=0,
-               visualize=False,
-               visualize_light=False,
                device="cuda"
            )
 lif = lif.to(device)
+"""
 
-train_reward_AC(lif, "LIF")"""
+device = torch.device("cuda")
+model.to(device)
+train_reward_AC(model, "ALIF")
